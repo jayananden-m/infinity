@@ -1,0 +1,44 @@
+repos:
+  # Ruff: lint + format on every commit
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^typelingo/
+      - id: ruff-format
+        files: ^typelingo/
+
+  # mypy: type check using the locally installed version (has all deps)
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: bash -c 'cd typelingo && mypy src/ --strict'
+        language: system
+        types: [python]
+        pass_filenames: false
+
+  # Frontend: TypeScript type check + ESLint
+  - repo: local
+    hooks:
+      - id: frontend-typecheck
+        name: frontend typecheck
+        entry: bash -c 'cd typelingo-frontend && npm run typecheck'
+        language: system
+        files: ^typelingo-frontend/.*\.(ts|tsx)$
+        pass_filenames: false
+
+      - id: frontend-lint
+        name: frontend lint
+        entry: bash -c 'cd typelingo-frontend && npm run lint'
+        language: system
+        files: ^typelingo-frontend/.*\.(ts|tsx)$
+        pass_filenames: false
+
+  # commitizen: enforce conventional commit messages
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.27.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]

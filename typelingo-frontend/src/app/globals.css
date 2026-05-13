@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/* ── Base tokens (void theme) ── */
+:root {
+  --bg:      #0a0a0a;
+  --panel:   #111111;
+  --b-idle:  #222222;
+  --b-cmd:   #444444;
+  --b-inner: #1e1e1e;
+  --t1:      #e4e4e4;
+  --t2:      #999999;
+  --t3:      #666666;
+  --green:   #3ddc84;
+  --red:     #ff5555;
+  --dot:     #1c1c1c;
+  --font:    var(--font-geist-mono), monospace;
+}
+
+/* ── Phosphor theme ── */
+body.theme-phosphor {
+  --bg:      #030f06;
+  --panel:   #060f08;
+  --b-idle:  #0e2714;
+  --b-cmd:   #1a4a22;
+  --b-inner: #0a1e0d;
+  --t1:      #3ddc84;
+  --t2:      #238a4e;
+  --t3:      #155e32;
+  --green:   #7fffa8;
+  --red:     #ff5555;
+  --dot:     #0a1f0d;
+}
+
+/* ── Amber theme ── */
+body.theme-amber {
+  --bg:      #0d0800;
+  --panel:   #120b00;
+  --b-idle:  #2a1800;
+  --b-cmd:   #4a2e00;
+  --b-inner: #1c1000;
+  --t1:      #f5a623;
+  --t2:      #a06010;
+  --t3:      #6b3f08;
+  --green:   #f5a623;
+  --red:     #ff5555;
+  --dot:     #1a0e00;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #__next {
+  height: 100%;
+  background: var(--bg);
+  color: var(--t1);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* dot grid bg */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none; z-index: 0;
+}
+
+/* scanlines */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,0.012) 3px, rgba(0,0,0,0.012) 4px
+  );
+  pointer-events: none; z-index: 9999;
+}
+
+::selection { background: #2a2a2a; color: #fff; }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-thumb { background: var(--b-inner); border-radius: 2px; }
+
+/* ── Keyframes ── */
+@keyframes blink   { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes shimmer { from{background-position:200% center} to{background-position:-200% center} }
+@keyframes fadeUp  { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+@keyframes panelIn { from{opacity:0;transform:translateY(16px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+/* ── Utility classes ── */
+.fade-up  { animation: fadeUp  0.2s  cubic-bezier(0.16,1,0.3,1) both; }
+.panel-in { animation: panelIn 0.35s cubic-bezier(0.16,1,0.3,1) both; }
+
+.shimmer {
+  background: linear-gradient(90deg, #555, #fff 50%, #555);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
